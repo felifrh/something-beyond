@@ -326,9 +326,9 @@ function gridTargets(dark, G, rects, s, rows) {
     var hb = sub.offsetTop + sub.offsetHeight + 12;
     L.hb = hb;
     var bottom = H - reserve - 6, avail = bottom - hb;
-    var ASP = 0.75;   /* card height / width: landscape 4:3 */
-    var h0 = Math.max(W * 0.55 * ASP, Math.min(W * 0.88 * ASP, avail - 120));
-    L.w0 = h0 / ASP; L.h0 = h0; L.y0 = bottom - h0 / 2; L.A = Math.max(h0 * 0.36, 72);
+    var ASP = 1.25;   /* card height / width: portrait 4:5 */
+    var h0 = Math.max(W * 0.46 * ASP, Math.min(W * 0.84 * ASP, avail - 170));
+    L.w0 = h0 / ASP; L.h0 = h0; L.y0 = bottom - h0 / 2; L.A = Math.max(h0 * 0.2, 52);
     cards.forEach(function (c) { c.style.width = L.w0 + "px"; c.style.height = L.h0 + "px"; c.style.left = (W - L.w0) / 2 + "px"; });
   }
   function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
