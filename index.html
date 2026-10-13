@@ -65,8 +65,8 @@ a { color: inherit; }
 #rail, #d-pg, #stage, #label { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
 #rail > div, #d-pg button { -webkit-appearance: none; appearance: none; outline: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 #rail > div { width: 28px; height: 15px; flex: none; display: grid; place-items: center; }
-#rail > div::before { content: ""; width: 3px; height: 3px; border-radius: 50%; background: var(--mute); opacity: 0.55; transition: width 0.3s var(--ease), height 0.3s var(--ease), opacity 0.3s, background 0.3s; }
-#rail > div.act::before { width: 7px; height: 7px; opacity: 1; background: var(--ink); }
+#rail > div::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--mute); opacity: 0.55; transform: scale(0.4286); transition: transform 0.3s var(--ease), opacity 0.3s, background-color 0.3s; will-change: transform; backface-visibility: hidden; }
+#rail > div.act::before { transform: scale(1); opacity: 1; background: var(--ink); }
 
 /* project detail: a pager moved by hand (pointer events), so swipes work the same everywhere */
 #detail { position: absolute; inset: 0; z-index: 30; visibility: hidden; }
@@ -104,8 +104,8 @@ a { color: inherit; }
 .close i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 #d-pg { position: absolute; left: 0; right: 0; bottom: 0; padding: 12px 20px calc(18px + env(safe-area-inset-bottom, 0px)); display: flex; justify-content: center; gap: 4px; z-index: 3; touch-action: none; background: linear-gradient(transparent, var(--bg) 60%); }
 #d-pg button { width: 28px; height: 28px; display: grid; place-items: center; }
-#d-pg button::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--mute); opacity: 0.5; transition: all 0.3s var(--ease); }
-#d-pg button.act::before { width: 9px; height: 9px; opacity: 1; background: var(--ink); }
+#d-pg button::before { content: ""; width: 9px; height: 9px; border-radius: 50%; background: var(--mute); opacity: 0.5; transform: scale(0.5556); transition: transform 0.3s var(--ease), opacity 0.3s, background-color 0.3s; will-change: transform; backface-visibility: hidden; }
+#d-pg button.act::before { transform: scale(1); opacity: 1; background: var(--ink); }
 
 #ghost { position: absolute; left: 0; top: 0; z-index: 40; object-fit: cover; object-position: 50% 32%; border-radius: 3px; display: none; pointer-events: none; will-change: transform; box-shadow: 0 14px 30px -16px var(--shadow); }
 
