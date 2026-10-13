@@ -737,6 +737,16 @@ function gridTargets(dark, G, rects, s, rows) {
     var start = performance.now(), covers = false, mStart = 0, stackOn = false, subOn = false, interactive = false, deepDone = false;
     Promise.race([Promise.all([preloadCovers(), deep >= 0 ? preloadProject(deep) : Promise.resolve()]), wait(9000)]).then(function () { covers = true; });
     pos = target = vel = deep >= 0 ? deep : 0; render();
+    if (deep >= 0) {
+      /* deep link (NFC): skip the title animation, land straight in the project */
+      Promise.race([Promise.all([preloadCovers(), preloadProject(deep)]), wait(2500)]).then(function () {
+        if (my !== runId) return;
+        stage.classList.add("on"); sub.classList.add("on"); canvas.style.pointerEvents = "none"; canvas.onpointerdown = null;
+        paint(1e4, 1e4); introRunning = false;
+        openProject(deep, cards[deep], { noHash: true });
+      });
+      return;
+    }
     canvas.onpointerdown = function () { var now = performance.now(); if (!mStart && (now - start) / 1000 < TIME.end) start = now - TIME.end * 1000; };
     function frame(now) {
       if (my !== runId) return;
