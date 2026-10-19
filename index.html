@@ -659,16 +659,35 @@ function gridTargets(dark, G, rects, s, rows) {
   $("about").addEventListener("click", function () { openInfo(); });
   $("i-close").addEventListener("click", function () { closeInfo(false); });
 
+  /* The hash is the single source of truth: a new NFC scan (or back/forward) can change it while a project or the info sheet is open. */
+  function instantCloseProject() {
+    detail.classList.remove("show"); dBody.style.transform = ""; dBody.style.opacity = "0"; dBg.style.opacity = "0";
+    ghost.style.display = "none"; if (cards[curIndex]) cards[curIndex].style.visibility = ""; track.innerHTML = "";
+    detailOpen = false; busy = false; curIndex = -1;
+  }
+  function syncFromHash(n) {
+    n = n || 0;
+    if (introRunning) return;
+    var hi = hashIndex();
+    if (hi < 0) {
+      if (detailOpen) closeProject(true);
+      else if (infoOpen && !hashInfo()) closeInfo(true);
+      else if (!detailOpen && !infoOpen && hashInfo()) openInfo({ noHash: true });
+      return;
+    }
+    if (detailOpen && curIndex === hi && !busy) return;
+    if (busy && n < 25) { setTimeout(function () { syncFromHash(n + 1); }, 150); return; }
+    if (infoOpen) { closeInfo(true); if (n < 25) setTimeout(function () { syncFromHash(n + 1); }, 200); return; }
+    if (detailOpen) instantCloseProject();
+    pos = target = vel = hi; render();
+    openProject(hi, cards[hi], { noHash: true });
+  }
   window.addEventListener("popstate", function () {
     if (suppressPop) { suppressPop = false; return; }
-    var hi = hashIndex();
-    if (detailOpen && hi < 0) closeProject(true);
-    else if (infoOpen && !hashInfo()) closeInfo(true);
-    else if (!detailOpen && !infoOpen && !introRunning) {
-      if (hi >= 0) openProject(hi, cards[hi], { noHash: true });
-      else if (hashInfo()) openInfo({ noHash: true });
-    }
+    syncFromHash(0);
   });
+  window.addEventListener("hashchange", function () { setTimeout(function () { syncFromHash(0); }, 30); });
+  window.addEventListener("pageshow", function (e) { if (e.persisted) syncFromHash(0); });
   window.addEventListener("keydown", function (e) {
     if (introRunning) return;
     if (infoOpen) { if (e.key === "Escape") closeInfo(false); return; }
